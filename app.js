@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,6 +14,8 @@ const usersRoutes = require('./routes/users-routes');
 const app = express();
 
 app.use(bodyParser.json());
+
+app.use('/uploads/profile-images', express.static(path.join('uploads', 'profile-images')));
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
