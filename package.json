@@ -1,35 +1,35 @@
 {
-  "name": "tune-in-bed",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/elena-rafailova/tune-in-bed.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/elena-rafailova/tune-in-bed/issues"
-  },
-  "homepage": "https://github.com/elena-rafailova/tune-in-bed#readme",
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.10.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.12.0",
-    "mongoose-unique-validator": "^2.0.3",
-    "multer": "^1.4.2",
-    "uuid": "^8.3.2"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
-  }
+    "name": "tune-in-bed",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/elena-rafailova/tune-in-bed.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/elena-rafailova/tune-in-bed/issues"
+    },
+    "homepage": "https://github.com/elena-rafailova/tune-in-bed#readme",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1",
+        "express-validator": "^6.10.0",
+        "jsonwebtoken": "^8.5.1",
+        "mongoose": "^5.12.0",
+        "mongoose-unique-validator": "^2.0.3",
+        "multer": "^1.4.2",
+        "uuid": "^8.3.2"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.7"
+    }
 }

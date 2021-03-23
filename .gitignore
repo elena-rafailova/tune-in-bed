@@ -2,6 +2,7 @@
 .env
 package-lock.json
 /uploads
+.prettierrc
 
 
 # Logs
