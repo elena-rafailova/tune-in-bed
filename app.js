@@ -9,6 +9,7 @@ require('dotenv').config();
 
 const HttpError = require('./models/http-error');
 const usersRoutes = require('./routes/users-routes');
+const subscriptionRoutes = require('./routes/subscription-routes');
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/users', usersRoutes);
+app.use('/api/plans', subscriptionRoutes);
 
 app.use((req, res, next) => {
     const error = new HttpError('Could not find this route.', 404);
