@@ -15,7 +15,7 @@ const listPlans = async (req, res, next) => {
     }
 
     res.json({
-        plans: plans.map((plans) => plans.toObject({ getters: true })),
+        plans: plans.map((plan) => plan.toObject({ getters: true })),
     });
 };
 

@@ -12,6 +12,30 @@ const userSchema = new Schema({
     isSubActive: { type: Boolean, required: true, default: false },
     nextPaymentDate: { type: Date, required: false, default: null },
     planId: { type: mongoose.Types.ObjectId, requried: true, ref: 'Plan' },
+    wishlist: [
+        {
+            type: mongoose.Types.ObjectId,
+            requried: true,
+            unique: true,
+            ref: 'File',
+        },
+    ],
+    archive: [
+        {
+            type: mongoose.Types.ObjectId,
+            requried: true,
+            unique: true,
+            ref: 'File',
+        },
+    ],
+    currents: [
+        {
+            type: mongoose.Types.ObjectId,
+            requried: true,
+            unique: true,
+            ref: 'File',
+        },
+    ],
 });
 
 userSchema.plugin(uniqueValidator);
