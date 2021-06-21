@@ -77,10 +77,13 @@ const signup = async (req, res, next) => {
         return next(new HttpError('Signing up went wrong', 500));
     }
 
+    delete createdUser.password;
+
     res.status(201).json({
         userId: createdUser.id,
         email: createdUser.email,
         token: token,
+        user: createdUser,
     });
 };
 
@@ -135,10 +138,13 @@ const login = async (req, res, next) => {
         return next(new HttpError('Logging in went wrong', 500));
     }
 
+    delete identifiedUser.password;
+
     res.json({
         userId: identifiedUser.id,
         email: identifiedUser.email,
         token: token,
+        user: identifiedUser,
     });
 };
 

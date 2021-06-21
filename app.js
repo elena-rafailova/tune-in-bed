@@ -8,7 +8,7 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 
 const HttpError = require('./models/http-error');
-const usersRoutes = require('./routes/users-routes');
+const userRoutes = require('./routes/user-routes');
 const subscriptionRoutes = require('./routes/subscription-routes');
 const libraryRoutes = require('./routes/library-routes');
 
@@ -21,6 +21,8 @@ app.use(
     express.static(path.join('uploads', 'profile-images'))
 );
 
+app.use('/assets/', express.static('assets'));
+
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
@@ -31,7 +33,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api/users', usersRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/plans', subscriptionRoutes);
 app.use('/api/library', libraryRoutes);
 
