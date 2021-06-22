@@ -7,7 +7,8 @@ const checkAuth = require('../middleware/check-auth');
 const router = express.Router();
 
 router.get('/', libraryController.listAll);
-router.get('/type/:typeId', libraryController.getByType);
+router.get('/getCategories', libraryController.getAllCategories);
+router.get('/category/:catName', libraryController.getByCategory);
 router.get('/:id', libraryController.getById);
 
 router.use(checkAuth);

@@ -30,12 +30,32 @@ const listAll = async (req, res, next) => {
     });
 };
 
-const getByType = async (req, res, next) => {
-    const typeId = req.params.typeId;
+const getByCategory = async (req, res, next) => {
+    const catName = req.params.catName;
+    let category = null;
+
+    try {
+        category = await Category.findOne({
+            title: catName.toLowerCase(),
+        }).exec();
+    } catch (err) {
+        const error = new HttpError('Something went wrong.', 500);
+
+        return next(error);
+    }
+
+    if (!category) {
+        const error = new HttpError(
+            'Could not find category with the provided name.',
+            404
+        );
+
+        return next(error);
+    }
 
     let chosenFiles;
     try {
-        chosenFiles = await File.find({ type: typeId });
+        chosenFiles = await File.find({ categories: category._id });
     } catch (err) {
         const error = new HttpError('Something went wrong.', 500);
 
@@ -44,7 +64,7 @@ const getByType = async (req, res, next) => {
 
     if (!chosenFiles || chosenFiles.length === 0) {
         const error = new HttpError(
-            'Could not find files with the provided type.',
+            'Could not find files with the provided category name.',
             404
         );
 
@@ -315,6 +335,24 @@ const toggleCurrents = async (req, res, next) => {
     res.status(200).json({ file: fileId });
 };
 
+const getAllCategories = async (req, res, next) => {
+    let categories;
+
+    try {
+        categories = await Category.find();
+    } catch (err) {
+        return next(new HttpError('Something went wrong.', 500));
+    }
+
+    if (!categories) {
+        return next(new HttpError('Cannot find categories.', 404));
+    }
+
+    res.json({
+        categories: categories.map((cat) => cat.toObject({ getters: true })),
+    });
+};
+
 const getCategoriesAndLanguage = async (file) => {
     try {
         file = await File.findById(file.id)
@@ -328,8 +366,9 @@ const getCategoriesAndLanguage = async (file) => {
 };
 
 exports.listAll = listAll;
-exports.getByType = getByType;
+exports.getByCategory = getByCategory;
 exports.getById = getById;
+exports.getAllCategories = getAllCategories;
 exports.toggleWishlist = toggleWishlist;
 exports.toggleArchive = toggleArchive;
 exports.toggleCurrents = toggleCurrents;
