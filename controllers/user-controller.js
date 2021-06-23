@@ -63,7 +63,7 @@ const signup = async (req, res, next) => {
     try {
         await createdUser.save();
     } catch (err) {
-        return next(new HttpError('Signing up went wrong', 500));
+        return next(new HttpError('Signing up went wrong' + err, 500));
     }
 
     let token;

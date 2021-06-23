@@ -11,31 +11,15 @@ const userSchema = new Schema({
     isFreeTrial: { type: Boolean, required: true, default: true },
     isSubActive: { type: Boolean, required: true, default: false },
     nextPaymentDate: { type: Date, required: false, default: null },
-    planId: { type: mongoose.Types.ObjectId, requried: true, ref: 'Plan' },
-    wishlist: [
-        {
-            type: mongoose.Types.ObjectId,
-            requried: true,
-            unique: true,
-            ref: 'File',
-        },
-    ],
-    archive: [
-        {
-            type: mongoose.Types.ObjectId,
-            requried: true,
-            unique: true,
-            ref: 'File',
-        },
-    ],
-    currents: [
-        {
-            type: mongoose.Types.ObjectId,
-            requried: true,
-            unique: true,
-            ref: 'File',
-        },
-    ],
+    planId: {
+        type: mongoose.Types.ObjectId,
+        requried: true,
+        ref: 'Plan',
+        default: null,
+    },
+    wishlist: { type: Array, required: true, default: [] },
+    archive: { type: Array, required: true, default: [] },
+    currents: { type: Array, required: true, default: [] },
 });
 
 userSchema.plugin(uniqueValidator);

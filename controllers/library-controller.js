@@ -353,6 +353,42 @@ const getAllCategories = async (req, res, next) => {
     });
 };
 
+const searchLibrary = async (req, res, next) => {
+    const { searchString } = req.body;
+
+    let searchResults = [];
+
+    if (searchString.length) {
+        try {
+            // chosenFiles = await File.find({
+            //     $text: { $search: searchString },
+            // });
+
+            await File.search(searchString).then((data) => {
+                searchResults = data;
+            });
+        } catch (err) {
+            const error = new HttpError('Something went wrong.', 500);
+
+            return next(error);
+        }
+    }
+
+    if (searchResults && searchResults.length) {
+        try {
+            searchResults = await Promise.all(
+                searchResults.map((file) => getCategoriesAndLanguage(file))
+            );
+        } catch (err) {
+            return next(new HttpError('Something went wrong.', 500));
+        }
+    }
+
+    res.json({
+        files: searchResults.map((file) => file.toObject({ getters: true })),
+    });
+};
+
 const getCategoriesAndLanguage = async (file) => {
     try {
         file = await File.findById(file.id)
@@ -372,3 +408,4 @@ exports.getAllCategories = getAllCategories;
 exports.toggleWishlist = toggleWishlist;
 exports.toggleArchive = toggleArchive;
 exports.toggleCurrents = toggleCurrents;
+exports.searchLibrary = searchLibrary;
