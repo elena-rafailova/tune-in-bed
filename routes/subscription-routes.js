@@ -10,10 +10,8 @@ router.get('/', subscriptionController.listPlans);
 
 router.use(checkAuth);
 
-router.post(
-    '/savePlan',
-    [check('planId').not().isEmpty()],
-    subscriptionController.savePlan
-);
+router.get('/savePlan/:id', subscriptionController.savePlan);
+
+router.get('/getPlanInfo/:id', subscriptionController.getPlanInfo);
 
 module.exports = router;

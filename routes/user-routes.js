@@ -3,6 +3,7 @@ const { check } = require('express-validator');
 
 const userController = require('../controllers/user-controller');
 const fileUpload = require('../middleware/file-upload');
+const checkAuth = require('../middleware/check-auth');
 
 const router = express.Router();
 
@@ -20,5 +21,17 @@ router.post(
 );
 
 router.post('/login', userController.login);
+
+router.use(checkAuth);
+
+router.put(
+    '/editProfile',
+    fileUpload.single('image'),
+    [check('name').not().isEmpty(), check('email').normalizeEmail().isEmail()],
+    userController.editProfile
+);
+
+router.delete('/deleteProfile/:id', userController.deleteProfile);
+router.get('/getUserLists', userController.getUserLists);
 
 module.exports = router;

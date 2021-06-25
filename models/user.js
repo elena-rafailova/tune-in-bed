@@ -17,9 +17,9 @@ const userSchema = new Schema({
         ref: 'Plan',
         default: null,
     },
-    wishlist: { type: Array, required: true, default: [] },
-    archive: { type: Array, required: true, default: [] },
-    currents: { type: Array, required: true, default: [] },
+    wishlist: [{ type: Schema.Types.ObjectId, ref: 'File' }],
+    archive: [{ type: Schema.Types.ObjectId, ref: 'File' }],
+    currents: [{ type: Schema.Types.ObjectId, ref: 'File' }],
 });
 
 userSchema.plugin(uniqueValidator);

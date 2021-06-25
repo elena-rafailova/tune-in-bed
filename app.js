@@ -29,7 +29,10 @@ app.use((req, res, next) => {
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept, Authorization'
     );
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
+    res.setHeader(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, PATCH, DELETE'
+    );
     next();
 });
 
@@ -44,9 +47,7 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
     if (req.file) {
-        fs.unlink(req.file.path, (err) => {
-            console.log('Failed to delete', err);
-        });
+        fs.unlink(req.file.path, (err) => {});
     }
 
     if (res.headerSent) {

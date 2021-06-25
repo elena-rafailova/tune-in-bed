@@ -20,15 +20,13 @@ const listPlans = async (req, res, next) => {
 };
 
 const savePlan = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-        throw new HttpError(
-            'Invalid inputs passed, please check your data.',
-            422
-        );
-    }
+    const planId = req.params.id;
 
-    const { planId } = req.body;
+    if (!planId) {
+        const error = new HttpError('You have not provided an id.', 422);
+
+        return next(error);
+    }
 
     let chosenPlan;
     try {
@@ -66,11 +64,11 @@ const savePlan = async (req, res, next) => {
         return next(error);
     }
 
+    let date = new Date();
     try {
         user.planId = planId;
         user.isSubActive = true;
 
-        let date = new Date();
         date = await calculateNextPayment(chosenPlan.paymentType, date);
         user.nextPaymentDate = date;
 
@@ -84,8 +82,32 @@ const savePlan = async (req, res, next) => {
         return next(error);
     }
 
-    res.status(200).json({ plan: planId });
+    res.status(200).json({
+        planId: planId,
+        success: true,
+        nextPaymentDate: date,
+    });
+};
+
+const getPlanInfo = async (req, res, next) => {
+    const id = req.params.id;
+
+    if (!id) {
+        return next(new HttpError('You have not provided an id.', 422));
+    }
+
+    try {
+        plan = await Plan.findOne({ _id: id });
+    } catch (err) {
+        return next(new HttpError('Something went wrong.', 500));
+    }
+
+    res.json({
+        success: true,
+        plan: plan.toObject({ getters: true }),
+    });
 };
 
 exports.listPlans = listPlans;
 exports.savePlan = savePlan;
+exports.getPlanInfo = getPlanInfo;
