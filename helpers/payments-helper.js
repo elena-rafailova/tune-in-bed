@@ -1,5 +1,6 @@
 const cron = require('node-cron');
 const User = require('../models/user');
+const nodemailer = require('nodemailer');
 
 const PAYMENT_TYPES = {
     monthly: 1,
@@ -22,6 +23,33 @@ const calculateNextPayment = (paymentType, date) => {
     return date;
 };
 
+const sendNotificationMail = (receiver) => {
+    var transporter = nodemailer.createTransport({
+        service: process.env.MAIL_SERVICE,
+        auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_PASS,
+        },
+    });
+
+    var mailOptions = {
+        from: process.env.MAIL_USER,
+        to: receiver.email,
+        subject: 'Renew your subscription!',
+        html: `<h4>Hello dear ${receiver.name},</h4
+        <p>Your subscription is expiring today! If you wish to continue listening to your favorite audiobooks and podcasts, login and pay now! :)</p>
+        <div>You can login <a href="${process.env.FED_URL}/auth" target="_blank">HERE</a>`,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+};
+
 let usersPaymentsTask = cron.schedule('0 0 0 * * *', async () => {
     let currentDate = new Date();
     const users = await User.find();
@@ -42,6 +70,7 @@ let usersPaymentsTask = cron.schedule('0 0 0 * * *', async () => {
 
                 if (diffDays === 0) {
                     user.isSubActive = false;
+                    sendNotificationMail(user);
                 }
             }
 

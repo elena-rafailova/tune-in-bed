@@ -77,6 +77,7 @@ const signup = async (req, res, next) => {
         return next(new HttpError('Signing up went wrong', 500));
     }
 
+    createdUser.regDate = createdUser._id.getTimestamp();
     delete createdUser.password;
 
     res.status(201).json({
@@ -84,6 +85,7 @@ const signup = async (req, res, next) => {
         email: createdUser.email,
         token: token,
         user: createdUser,
+        regDate: createdUser._id.getTimestamp(),
     });
 };
 
@@ -145,6 +147,7 @@ const login = async (req, res, next) => {
         email: identifiedUser.email,
         token: token,
         user: identifiedUser,
+        regDate: identifiedUser._id.getTimestamp(),
     });
 };
 

@@ -186,7 +186,7 @@ const toggleWishlist = async (req, res, next) => {
         return next(error);
     }
 
-    res.status(200).json({ file: fileId });
+    res.status(200).json({ success: true, wishlist: user.wishlist });
 };
 
 const toggleArchive = async (req, res, next) => {
@@ -245,6 +245,14 @@ const toggleArchive = async (req, res, next) => {
             user.archive.splice(fileIndex, 1);
         } else if (fileIndex === -1 && +state === 1) {
             user.archive.push(fileId);
+
+            let currentsFileIndex = user.currents.findIndex((fId) => {
+                return fId.toString() === fileId;
+            });
+
+            if (currentsFileIndex > -1) {
+                user.currents.splice(currentsFileIndex, 1);
+            }
         } else {
             throw new Error();
         }
@@ -259,7 +267,11 @@ const toggleArchive = async (req, res, next) => {
         return next(error);
     }
 
-    res.status(200).json({ file: fileId });
+    res.status(200).json({
+        success: true,
+        archive: user.archive,
+        currents: user.currents,
+    });
 };
 
 const toggleCurrents = async (req, res, next) => {
@@ -317,7 +329,13 @@ const toggleCurrents = async (req, res, next) => {
         if (fileIndex > -1 && +state === 0) {
             user.currents.splice(fileIndex, 1);
         } else if (fileIndex === -1 && +state === 1) {
-            user.currents.push(fileId);
+            let archiveFileIndex = user.archive.findIndex((fId) => {
+                return fId.toString() === fileId;
+            });
+
+            if (archiveFileIndex === -1) {
+                user.currents.push(fileId);
+            }
         } else {
             throw new Error();
         }
@@ -332,7 +350,10 @@ const toggleCurrents = async (req, res, next) => {
         return next(error);
     }
 
-    res.status(200).json({ file: fileId });
+    res.status(200).json({
+        success: true,
+        currents: user.currents,
+    });
 };
 
 const getAllCategories = async (req, res, next) => {
