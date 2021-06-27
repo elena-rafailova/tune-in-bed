@@ -174,7 +174,7 @@ const editProfile = async (req, res, next) => {
     if (!existingUser) {
         const error = new HttpError(
             'User with that email does not exist, please sign up.',
-            422
+            404
         );
         return next(error);
     }
